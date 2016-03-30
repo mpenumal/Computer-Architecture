@@ -1,0 +1,47 @@
+# Implement bubble sort here
+# Input arguments:
+#	$a0 - starting memory address of the array to be sorted
+#	$a1 - number of elements in array
+# More information about bubble sort can be found here:
+# http://en.wikipedia.org/wiki/Bubble_sort
+
+bubble_sort:
+	#TODO
+li $s5, 0
+loop_outside:
+	beq $a1, $s5, exitloop
+	li $t0, 0 #loop counter
+	li $s0, 4
+	li $s4,1
+	subu $a1,$a1,$s4
+	loop:
+	beq $t0,$a1, loop_outside # exit the loop
+	nop
+	mullo $s1, $s0, $t0  #s1=0/4/8....etc
+	addu $s2, $a0, $s1   #s2=a0+0/4/8
+	lw $t1, 0($s2)
+	addiu $s3, $s1, 4	#s3=4/8/12
+	addu $t2,$a0,$s3 #increment array address during branch delay slot
+	#lw $a1,4($a0)
+	lw $t3, 0($t2)
+	slt  $t4, $t1, $t3
+	li $t5, 0
+	beq $t4,$t5, bub_swap
+	nop
+	l1:
+	addiu $t0, $t0, 1	# increment loop counter during branch delay slot
+	j loop
+	nop
+	return
+	nop
+	
+	#add 4 to the offset each time the loop executes
+	bub_swap:
+	move $t6, $t1
+	sw $t3, 0($s2)
+	sw $t6, 0($t2)
+	
+	j l1
+	nop
+exitloop:
+          nop

@@ -1,0 +1,55 @@
+# You can implement any sorting algorithm you choose.  You can really go two ways with this: implement the simplest algorithm you can think of in as few lines as possible or take on a faster, but more complex algorithm like quicksort or heapsort.
+# Input arguments:
+#	$a0 - starting memory address of the array to be sorted
+#	$a1 - number of elements in array
+
+wildcard_sort:
+	#TODO
+li $s4, 0 #outside pass counter
+	li $t0,0 #inside loop counter
+	li $s0, 4 #multiplier
+	li $a2,1
+	subu $a1, $a1,$a2
+loop_outside_wild:
+	
+	mullo $s1, $s0, $s4
+	addu $s5, $a0, $s1 #s5 is the address of first value of every pass
+	move $s3, $s5 # save the address in s3 incase the first element is already lowest, so the address is also stored
+	lw $t7, 0($s5) #t7 will always hold the min value
+	beq $s4, $a1, end_wild_sort
+	move $t0, $s4
+
+	loop_min:
+	beq $t0, $a1, exit_loop_wild
+	nop
+	addiu $t0, $t0,1
+	mullo $s1, $s0, $t0
+	addu $s2, $a0, $s1
+	lw $t2, 0($s2)
+	slt $t3, $t7, $t2
+	li $t4,0
+	beq $t3, $t4, min_value	
+	nop
+	j loop_min
+	nop
+	return
+	nop
+
+min_value:
+	move $t7, $t2
+	move $s3, $s2
+	j loop_min
+	nop
+	
+exit_loop_wild:
+	lw $t4, 0($s5)
+	sw $t7, 0($s5)
+	sw $t4, 0($s3)
+	addiu $s4, $s4, 1
+	j loop_outside_wild
+	nop
+         
+end_wild_sort:
+	nop
+	return
+	nop
